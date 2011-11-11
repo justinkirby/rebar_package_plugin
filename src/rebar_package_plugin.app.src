@@ -1,5 +1,5 @@
 %% -*- mode: erlang -*-
-{application, rebar_dist_plugin, [
+{application, rebar_package_plugin, [
     {description, "Rebar Package Plugin"},
     {vsn, git},
     {registered, []},
