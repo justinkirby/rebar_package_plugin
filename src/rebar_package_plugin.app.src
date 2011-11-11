@@ -1,0 +1,19 @@
+%% -*- mode: erlang -*-
+{application, rebar_package_plugin,
+ [
+  {description, "Make a erl_tar compatible tarball of a rebar release"},
+  {vsn, git},
+  {applications,
+   [ kernel,
+     stdlib,
+     sasl,
+   ]},
+  {modules,
+   [rebar_package_plugin
+   ]
+  },
+  {registered, []},
+  {env, [ ] },
+  {mods,[]}
+
+ ]}.
