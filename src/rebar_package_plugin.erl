@@ -51,29 +51,29 @@ run_checks(_ReltoolFile, {Name, _}) ->
 
     NamePath = filename:join([".",Name]),
     true = rebar_utils:prop_check(filelib:is_dir(NamePath),
-				  "Release directory does not exist (~p)~n",[NamePath]),
+                  "Release directory does not exist (~p)~n",[NamePath]),
     ok.
 
 setup(_ReltoolFile, {Name,_Ver}) ->
     PathParts = [[Name, "releases","*"],
-		 [Name, "lib","*","ebin"]
-		],
+         [Name, "lib","*","ebin"]
+        ],
 
     {ok, Cwd} = file:get_cwd(),
 
     AddToPath = fun(P) ->
-     			RealPath = Cwd++"/"++P,
-     			case filelib:is_dir(RealPath) of
-     			    true -> code:add_path(RealPath);
-     			    false -> ok
-     			end
-     		end,
+                RealPath = Cwd++"/"++P,
+                case filelib:is_dir(RealPath) of
+                    true -> code:add_path(RealPath);
+                    false -> ok
+                end
+            end,
 
     PathLists = fun(P) ->
-     			Path = filename:join(P),
-     			PathAdd = filelib:wildcard(Path),
-     			lists:foreach(AddToPath,PathAdd)
-     		end,
+                Path = filename:join(P),
+                PathAdd = filelib:wildcard(Path),
+                lists:foreach(AddToPath,PathAdd)
+            end,
 
     lists:foreach(PathLists, PathParts),
 
@@ -91,11 +91,11 @@ gen_deps(Config, _ReltoolFile, {Name, Ver}) ->
     RelFile = filename:join([".",Name,"releases",Ver,Name++".rel"]),
 
     AllApps = case file:consult(RelFile) of
-		  {ok, [{release,_RelAppVsn,_RelErts,RelApps}]} ->
-		      RelApps;
-		  {error, Reason} ->
-		      ?ABORT("Unable to consult ~p~n~p~n",[RelFile,Reason])
-	      end,
+          {ok, [{release,_RelAppVsn,_RelErts,RelApps}]} ->
+              RelApps;
+          {error, Reason} ->
+              ?ABORT("Unable to consult ~p~n~p~n",[RelFile,Reason])
+          end,
 
     Deps = get_deps_list(Config),
     AppList = get_apps_list(Config),
@@ -154,8 +154,8 @@ run_systools({Name, Ver}) ->
 
 %%     {ok, RelPkg} = erl_tar:open(Rel,[write,compressed]),
 %%     lists:foreach(fun(F) ->
-%% 			  append_to_rel(RelPkg,F)
-%% 		  end,FilesAdd),
+%%                append_to_rel(RelPkg,F)
+%%            end,FilesAdd),
 %%     erl_tar:close(RelPkg).
 
 %% append_to_rel(Rel,File) ->
@@ -165,26 +165,26 @@ run_systools({Name, Ver}) ->
 
 get_deps_list(Config) ->
     RebarDeps = case get_rebar_key(deps,Config) of
-		    undefined -> [];
-		    Deps ->
-			lists:map(fun({D,_,_}) -> D end,Deps)
-		end,
+            undefined -> [];
+            Deps ->
+            lists:map(fun({D,_,_}) -> D end,Deps)
+        end,
     RebarDeps.
 get_apps_list(Config) ->
     Apps = case get_rebar_key(sub_dirs,Config) of
-	       undefined -> [];
-	       Subs ->
-		   NotRel = lists:filter(fun(S) -> case S of "rel" -> false; _ -> true end end, Subs),
-		   lists:map(fun(S) -> list_to_atom(lists:last(filename:split(S))) end,NotRel)
-	   end,
+           undefined -> [];
+           Subs ->
+           NotRel = lists:filter(fun(S) -> case S of "rel" -> false; _ -> true end end, Subs),
+           lists:map(fun(S) -> list_to_atom(lists:last(filename:split(S))) end,NotRel)
+       end,
     Apps.
 
 
 
 get_rebar_key(Key,{config,_Path,L}) ->
     case proplists:get_value(Key,L) of
-	undefined -> undefined;
-	Value -> Value
+    undefined -> undefined;
+    Value -> Value
     end.
 
 tag_deps(Apps,Deps,AppList) ->
